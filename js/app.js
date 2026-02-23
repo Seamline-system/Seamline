@@ -84,7 +84,12 @@ function init() {
 window.switchTab = function(tab, btnEl) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p  => p.classList.remove('active'));
-  document.getElementById('panel-' + tab).classList.add('active');
+  const panel = document.getElementById('panel-' + tab);
+  panel.classList.add('active');
+  // Re-trigger panel animation on every switch
+  panel.style.animation = 'none';
+  panel.offsetHeight; // reflow
+  panel.style.animation = '';
   btnEl.classList.add('active');
   if (tab === 'history') renderHistory();
   if (tab === 'sales')   renderSalesTracker();
@@ -274,6 +279,10 @@ function renderHistory() {
       </div>
     </div>`;
   }).join('');
+  // Stagger quote cards
+  container.querySelectorAll('.quote-card').forEach((el, i) => {
+    el.style.animationDelay = `${i * 0.06}s`;
+  });
 }
 
 function formatDate(d) {
@@ -853,6 +862,10 @@ window.renderClientDirectory = function() {
       </div>
     </div>`;
   }).join('');
+  // Stagger client cards
+  container.querySelectorAll('.client-dir-card').forEach((el, i) => {
+    el.style.animationDelay = `${i * 0.07}s`;
+  });
 };
 
 // ── Modal Open / Close ─────────────────────────

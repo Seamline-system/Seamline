@@ -1655,3 +1655,410 @@ textarea {
 
 /* Right-align number column headers */
 .cp-table th.num, .cp-table td.num { text-align: right; }
+
+/* ═══════════════════════════════════════════════
+   SEAMLINE — ANIMATIONS
+   Brutalist / Industrial motion design
+   Sharp entries, purposeful transitions
+   ═══════════════════════════════════════════════ */
+
+/* ── Global animation timing tokens ── */
+:root {
+  --ease-snap:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sharp:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Page load: header slides down ── */
+@keyframes headerDrop {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+header {
+  animation: headerDrop 0.5s var(--ease-snap) both;
+}
+
+/* ── Tabs bar slides in ── */
+@keyframes tabsSlide {
+  from { transform: translateX(-24px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.tabs {
+  animation: tabsSlide 0.45s var(--ease-snap) 0.15s both;
+}
+
+/* ── Tab button: underline grows from left ── */
+.tab-btn::after {
+  transition: width 0.25s var(--ease-sharp), background-color 0.2s;
+  transform-origin: left;
+}
+
+.tab-btn {
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple flash on click */
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.12);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease-sharp);
+}
+
+.tab-btn:active::before { transform: scaleX(1); }
+
+/* ── Panel: sharp wipe-in from left ── */
+@keyframes panelReveal {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.panel.active {
+  animation: panelReveal 0.35s var(--ease-snap) both;
+}
+
+/* ── KPI cards: staggered rise ── */
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.kpi-card {
+  animation: cardRise 0.4s var(--ease-snap) both;
+  transition: box-shadow 0.2s, transform 0.2s var(--ease-snap);
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.kpi-grid .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-grid .kpi-card:nth-child(2) { animation-delay: 0.10s; }
+.kpi-grid .kpi-card:nth-child(3) { animation-delay: 0.15s; }
+.kpi-grid .kpi-card:nth-child(4) { animation-delay: 0.20s; }
+.kpi-grid .kpi-card:nth-child(5) { animation-delay: 0.25s; }
+.kpi-grid .kpi-card:nth-child(6) { animation-delay: 0.30s; }
+
+/* ── Quote cards: sequential slide-in ── */
+@keyframes quoteSlide {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.quote-card {
+  animation: quoteSlide 0.3s var(--ease-snap) both;
+  transition: box-shadow 0.2s, transform 0.18s var(--ease-snap), border-color 0.2s;
+}
+
+.quote-card:hover {
+  transform: translateX(4px);
+  box-shadow: -4px 0 0 var(--black), 4px 4px 0 var(--black);
+}
+
+/* ── Buttons: press-down feel ── */
+.btn {
+  transition: transform 0.12s var(--ease-sharp), box-shadow 0.12s, background 0.15s, color 0.15s;
+}
+
+.btn:hover  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.btn:active { transform: translateY(1px);  box-shadow: none; }
+
+.btn-primary:hover   { box-shadow: 3px 3px 0 rgba(0,0,0,0.35); }
+.btn-secondary:hover { box-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+
+/* ── Add item button pulse ── */
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 0 3px rgba(0,0,0,0.08); }
+}
+
+.add-item-btn {
+  transition: background 0.15s, color 0.15s, transform 0.12s var(--ease-snap);
+}
+
+.add-item-btn:hover { transform: translateY(-1px); }
+.add-item-btn:active { transform: translateY(1px); }
+
+/* ── Summary box: numbers count up (CSS only — fade+scale) ── */
+@keyframes numPop {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.summary-value {
+  animation: numPop 0.3s var(--ease-bounce) both;
+  display: inline-block;
+}
+
+/* ── Chart bars: grow from bottom ── */
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+.bar-rev, .bar-profit {
+  transform-origin: bottom;
+  animation: barGrow 0.5s var(--ease-snap) both;
+}
+
+/* ── Top client bars: grow from left ── */
+@keyframes barHoriz {
+  from { width: 0 !important; }
+  to   { /* final width set inline */ }
+}
+
+.tc-bar-fill {
+  animation: barHoriz 0.6s var(--ease-snap) both;
+}
+
+/* ── Client directory cards: staggered reveal ── */
+@keyframes clientCardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.client-dir-card {
+  animation: clientCardIn 0.3s var(--ease-snap) both;
+  transition: box-shadow 0.2s, transform 0.18s var(--ease-snap);
+}
+
+.client-dir-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1), 4px 4px 0 var(--black);
+}
+
+/* ── Modal: scale in from center ── */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.modal-box {
+  animation: modalIn 0.28s var(--ease-bounce) both;
+}
+
+/* ── Mini buttons: pop on hover ── */
+.mini-btn {
+  transition: background 0.15s, color 0.15s, transform 0.12s var(--ease-snap), box-shadow 0.12s;
+}
+
+.mini-btn:hover  { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(0,0,0,0.25); }
+.mini-btn:active { transform: translateY(0); box-shadow: none; }
+
+/* ── Sign out button ── */
+.btn-signout {
+  transition: background 0.15s, color 0.15s, transform 0.12s var(--ease-snap);
+}
+
+.btn-signout:hover  { transform: translateY(-1px); }
+.btn-signout:active { transform: translateY(1px); }
+
+/* ── Form inputs: focus border slide ── */
+input, textarea, select {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+/* ── Item rows: slide in when added ── */
+@keyframes itemIn {
+  from { opacity: 0; transform: translateX(-10px); max-height: 0; }
+  to   { opacity: 1; transform: translateX(0);     max-height: 100px; }
+}
+
+.item-row {
+  animation: itemIn 0.25s var(--ease-snap) both;
+}
+
+/* ── Status pills: flip on select ── */
+.status-pill {
+  transition: background 0.2s, color 0.2s, transform 0.15s var(--ease-bounce), box-shadow 0.2s;
+}
+
+.status-radio input:checked + .status-pill {
+  transform: scale(1.04);
+}
+
+/* ── Logo: subtle entrance ── */
+@keyframes logoIn {
+  from { opacity: 0; letter-spacing: 6px; transform: skewX(-2deg); }
+  to   { opacity: 1; letter-spacing: normal; transform: skewX(0); }
+}
+
+.logo img {
+  animation: logoIn 0.6s var(--ease-snap) 0.1s both;
+}
+
+/* ── Client autocomplete dropdown ── */
+@keyframes dropdownOpen {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.client-dropdown[style*="block"] {
+  animation: dropdownOpen 0.18s var(--ease-snap) both;
+}
+
+/* ── Drawer: row hover line ── */
+.cp-table-row {
+  transition: background 0.12s;
+}
+
+/* ── CP stat value count-fade ── */
+@keyframes statFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cp-stat-val {
+  animation: statFade 0.3s var(--ease-snap) both;
+}
+
+/* ── PDF button: slide-shimmer ── */
+.cp-pdf-btn {
+  overflow: hidden;
+  position: relative;
+}
+
+.cp-pdf-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease-sharp);
+}
+
+.cp-pdf-btn:hover::after { transform: translateX(100%); }
+
+/* ── Chart card hover lift ── */
+.chart-card {
+  transition: box-shadow 0.2s, transform 0.2s var(--ease-snap);
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+}
+
+/* ── Toast: upgrade to slide + bounce ── */
+.toast {
+  transition: all 0.4s var(--ease-bounce) !important;
+}
+
+/* ── Scrollbar: minimal & branded ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--off-white); }
+::-webkit-scrollbar-thumb { background: var(--black); }
+::-webkit-scrollbar-thumb:hover { background: var(--dark-grey); }
+
+/* ── Design upload area ── */
+.design-upload-area {
+  transition: border-color 0.2s, background 0.2s, transform 0.15s var(--ease-snap);
+}
+
+.design-upload-area:hover {
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0 var(--black);
+}
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════════ */
+
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#loadingScreen.ls-hide {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.04);
+}
+
+.ls-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Logo: fades + scales in */
+@keyframes lsLogoIn {
+  0%   { opacity: 0; transform: scale(0.88) translateY(12px); filter: blur(6px); }
+  60%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.ls-logo {
+  width: 260px;
+  max-width: 70vw;
+  /* white logo on black bg — 1.6.png is the white-on-black version */
+  animation: lsLogoIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+/* Loading bar */
+.ls-bar-wrap {
+  width: 200px;
+  height: 2px;
+  background: rgba(255,255,255,0.12);
+  overflow: hidden;
+  animation: lsLogoIn 0.5s ease 0.5s both;
+}
+
+@keyframes lsBarFill {
+  0%   { transform: translateX(-100%); }
+  40%  { transform: translateX(-20%); }
+  100% { transform: translateX(0%); }
+}
+
+.ls-bar {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  transform: translateX(-100%);
+  animation: lsBarFill 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+
+/* Tagline */
+@keyframes lsTagIn {
+  from { opacity: 0; letter-spacing: 6px; }
+  to   { opacity: 1; letter-spacing: 3px; }
+}
+
+.ls-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  animation: lsTagIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}

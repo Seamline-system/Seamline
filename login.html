@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SEAMLINE — Login</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,6 +16,91 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── LOADING SCREEN ── */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #loadingScreen.ls-hide {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.05);
+    }
+
+    .ls-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    @keyframes lsLogoIn {
+      0%   { opacity: 0; transform: scale(0.88) translateY(14px); filter: blur(8px); }
+      60%  { opacity: 1; filter: blur(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+
+    .ls-logo {
+      width: 280px;
+      max-width: 72vw;
+      animation: lsLogoIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .ls-bar-wrap {
+      width: 200px;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 0.4s ease 0.6s forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    @keyframes lsBarFill {
+      0%   { transform: translateX(-100%); }
+      40%  { transform: translateX(-25%); }
+      100% { transform: translateX(0%); }
+    }
+
+    .ls-bar {
+      height: 100%;
+      width: 100%;
+      background: #fff;
+      transform: translateX(-100%);
+      animation: lsBarFill 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+    }
+
+    @keyframes lsTagIn {
+      from { opacity: 0; letter-spacing: 7px; }
+      to   { opacity: 1; letter-spacing: 3px; }
+    }
+
+    .ls-tagline {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: lsTagIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+    }
+
+    /* ── LOGIN FORM ── */
+    @keyframes loginReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .login-box {
@@ -27,19 +110,21 @@
       border: 2px solid #fff;
       background: #000;
       text-align: center;
+      opacity: 0;
     }
 
-    /* LOGO */
-    .logo {
-      margin-bottom: 16px;
+    .login-box.visible {
+      animation: loginReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
+
+    .logo { margin-bottom: 16px; }
 
     .logo img {
-      height: 50px;   /* adjust size here */
+      height: 50px;
       width: auto;
       display: block;
       margin: 0 auto;
-      filter: invert(1); /* remove this if your logo is already white */
+      filter: invert(1);
     }
 
     .subtitle {
@@ -74,10 +159,13 @@
       background: #111;
       color: #fff;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    input:focus { border-color: #fff; }
+    input:focus {
+      border-color: #fff;
+      box-shadow: 3px 3px 0 rgba(255,255,255,0.1);
+    }
 
     .btn-login {
       width: 100%;
@@ -92,10 +180,11 @@
       border: none;
       cursor: pointer;
       margin-top: 8px;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.12s, box-shadow 0.12s;
     }
 
-    .btn-login:hover { background: #ddd; }
+    .btn-login:hover  { background: #ddd; transform: translateY(-1px); box-shadow: 3px 3px 0 rgba(255,255,255,0.2); }
+    .btn-login:active { transform: translateY(1px); box-shadow: none; }
 
     .error-msg {
       color: #ff6b6b;
@@ -108,33 +197,38 @@
     }
 
     .loading { opacity: 0.6; pointer-events: none; }
-
   </style>
 </head>
 
 <body>
-  <div class="login-box">
 
-    <!-- LOGO IMAGE -->
+  <!-- LOADING SCREEN -->
+  <div id="loadingScreen">
+    <div class="ls-content">
+      <img src="1.6.png" alt="SEAMLINE" class="ls-logo">
+      <div class="ls-bar-wrap">
+        <div class="ls-bar"></div>
+      </div>
+      <div class="ls-tagline">Quotation Management System</div>
+    </div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="login-box" id="loginBox">
     <div class="logo">
       <img src="logo.jpg" alt="Seamline Logo">
     </div>
-
     <div class="subtitle">Quotation Management System</div>
-
     <div class="form-group">
       <label>Email</label>
       <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
     </div>
-
     <div class="form-group">
       <label>Password</label>
       <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
     </div>
-
     <button class="btn-login" id="loginBtn" onclick="loginUser()">Sign In</button>
     <div class="error-msg" id="errorMsg"></div>
-
   </div>
 
   <!-- Firebase -->
@@ -152,12 +246,34 @@
       appId: "1:594336642381:web:4bccc94ecbcc5d4ae3f304"
     };
 
-    const app = initializeApp(firebaseConfig);
+    const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // If already logged in, skip straight to app
     onAuthStateChanged(auth, user => {
-      if (user) window.location.href = 'index.html';
+      if (user) {
+        window.location.href = 'index.html';
+        return;
+      }
+      // Not logged in — dismiss loader and show form
+      dismissLoader();
     });
+
+    function dismissLoader() {
+      const ls    = document.getElementById('loadingScreen');
+      const box   = document.getElementById('loginBox');
+      // Wait for bar animation to finish (~1.8s from load)
+      const elapsed = performance.now();
+      const remaining = Math.max(1800 - elapsed, 0);
+      setTimeout(() => {
+        ls.classList.add('ls-hide');
+        setTimeout(() => {
+          ls.remove();
+          document.body.style.overflow = '';
+          box.classList.add('visible');
+        }, 700);
+      }, remaining);
+    }
 
     window.loginUser = async function() {
       const email    = document.getElementById('email').value.trim();
@@ -178,9 +294,9 @@
         if (e.code === 'auth/wrong-password')    msg = 'Incorrect password.';
         if (e.code === 'auth/invalid-email')     msg = 'Please enter a valid email.';
         if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Try again later.';
-        errEl.textContent    = msg;
-        errEl.style.display  = 'block';
-        btn.textContent      = 'Sign In';
+        errEl.textContent   = msg;
+        errEl.style.display = 'block';
+        btn.textContent     = 'Sign In';
         btn.classList.remove('loading');
       }
     };
