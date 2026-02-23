@@ -46,7 +46,8 @@ const SEAMLINE_LOGO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSU
 // ── Dismiss post-login loader ─────────────────
 function dismissLoader() {
   const loader = document.getElementById('appLoader');
-  if (!loader) return;
+  if (!loader || loader._dismissed) return;
+  loader._dismissed = true;
   loader.classList.add('fade-out');
   setTimeout(() => loader.remove(), 700);
 }
@@ -61,6 +62,9 @@ onAuthStateChanged(auth, user => {
   document.getElementById('userInfo').textContent = user.email;
   init();
   subscribeToQuotes();
+  // Dismiss loader as soon as auth confirms — don't wait for Firestore
+  // 600ms lets the bar animation finish naturally before fading out
+  setTimeout(dismissLoader, 600);
 });
 
 window.signOutUser = async function() {
@@ -71,17 +75,11 @@ window.signOutUser = async function() {
 };
 
 // ── Real-time Firestore Listener ───────────────
-let _loaderDismissed = false;
 function subscribeToQuotes() {
   const q = query(collection(db, 'quotes'), orderBy('createdAt', 'desc'));
   unsubscribeQuotes = onSnapshot(q, snapshot => {
     quotes = snapshot.docs.map(d => ({ ...d.data(), _docId: d.id }));
     updateCount();
-    // Dismiss loader on first snapshot — data is ready
-    if (!_loaderDismissed) {
-      _loaderDismissed = true;
-      setTimeout(dismissLoader, 350);
-    }
     const historyPanel = document.getElementById('panel-history');
     if (historyPanel && historyPanel.classList.contains('active')) renderHistory();
     const salesPanel = document.getElementById('panel-sales');

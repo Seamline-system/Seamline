@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     body { visibility: hidden; }
+    /* Loader is always visible immediately — overrides body visibility:hidden */
+    #appLoader { visibility: visible; }
 
     /* ── Post-Login Loading Screen ── */
     #appLoader {
@@ -25,7 +27,9 @@
     #appLoader.fade-out {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1);
+      transform: scale(1.04);
+      transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.75s cubic-bezier(0.4,0,0.2,1);
     }
     #appLoader .al-logo {
       width: 270px;
