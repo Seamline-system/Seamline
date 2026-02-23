@@ -8,6 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
+    body { visibility: hidden; }
+
     /* ── Post-Login Loading Screen ── */
     #appLoader {
       position: fixed;
@@ -23,11 +25,11 @@
     #appLoader.fade-out {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1);
+      transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1);
     }
     #appLoader .al-logo {
       width: 270px;
-      animation: alLogoIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
+      animation: alLogoIn 1s cubic-bezier(0.16,1,0.3,1) both;
     }
     #appLoader .al-bar-wrap {
       display: flex;
@@ -35,7 +37,7 @@
       align-items: center;
       gap: 14px;
       opacity: 0;
-      animation: alFadeUp 0.4s ease both 0.35s;
+      animation: alFadeUp 0.5s ease both 0.5s;
     }
     #appLoader .al-label {
       font-family: 'DM Sans', sans-serif;
@@ -55,13 +57,13 @@
       height: 100%;
       width: 0;
       background: #fff;
-      animation: alBarFill 0.8s cubic-bezier(0.4,0,0.2,1) 0.3s both;
+      animation: alBarFill 1.5s cubic-bezier(0.4,0,0.2,1) 0.4s both;
     }
     #appLoader .al-dots {
       display: flex;
       gap: 7px;
       opacity: 0;
-      animation: alFadeUp 0.35s ease both 0.55s;
+      animation: alFadeUp 0.4s ease both 0.7s;
     }
     #appLoader .al-dot {
       width: 5px;
@@ -71,14 +73,14 @@
       animation: alDotPulse 1.3s ease-in-out infinite;
     }
     #appLoader .al-dot:nth-child(2) { animation-delay: 0.22s; }
-    #appLoader .al-dot:nth-child(3) { animation-delay: 0.55s; }
+    #appLoader .al-dot:nth-child(3) { animation-delay: 0.44s; }
 
     @keyframes alLogoIn {
-      from { opacity:0; transform:scale(0.92) translateY(12px); filter:blur(6px); }
-      to   { opacity:1; transform:scale(1)    translateY(0);    filter:blur(0); }
+      from { opacity:0; transform:scale(0.9) translateY(14px); filter:blur(8px); }
+      to   { opacity:1; transform:scale(1)   translateY(0);    filter:blur(0); }
     }
     @keyframes alFadeUp {
-      from { opacity:0; transform:translateY(8px); }
+      from { opacity:0; transform:translateY(10px); }
       to   { opacity:1; transform:translateY(0); }
     }
     @keyframes alBarFill {
