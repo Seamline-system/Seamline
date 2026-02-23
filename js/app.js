@@ -42,9 +42,12 @@ const SEAMLINE_LOGO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSU
 // ── Auth Guard ─────────────────────────────────
 onAuthStateChanged(auth, user => {
   if (!user) {
-    window.location.href = 'login.html';
+    // Not logged in — go to login immediately, no flash
+    window.location.replace('login.html');
     return;
   }
+  // Auth confirmed — reveal the app
+  document.body.style.visibility = 'visible';
   currentUser = user;
   document.getElementById('userInfo').textContent = user.email;
   init();
